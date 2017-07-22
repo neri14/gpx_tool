@@ -1,5 +1,7 @@
 #include "tmp_get_nodes.h"
 
+#include <string>
+
 std::list<xmlNode*> get_all_nodes_named(xmlNode *node, std::string name)
 {
 	std::list<xmlNode*> segments;
