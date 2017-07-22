@@ -9,7 +9,7 @@ OUTPUT_FILE = ${OUTPUT_DIR}/gpx_tool
 
 .PHONY: all
 all: ${OUTPUT_DIR}
-	$(CXX) ${INPUT_FILE} -o ${OUTPUT_FILE} -lxml2  -I/usr/include/libxml2/ -std=c++14 -g
+	$(CXX) ${INPUT_FILE} -o ${OUTPUT_FILE} -lxml2  -I/usr/include/libxml2/ -std=c++17 -g
 
 ${OUTPUT_DIR}:
 	mkdir -p ${OUTPUT_DIR}
