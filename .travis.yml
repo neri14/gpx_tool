@@ -1,0 +1,18 @@
+sudo: required
+dist: trusty
+language: cpp
+compiler: g++
+
+install: export CXX="g++-7"
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libxml2
+      - g++-7
+
+script:
+  - g++-7 --version
+  - make test
