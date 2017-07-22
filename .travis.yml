@@ -1,21 +1,58 @@
 sudo: required
 dist: trusty
 language: cpp
-compiler: g++
 
-install: export CXX="g++-7"
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - libxml2
+            - cmake
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - libxml2
+            - cmake
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    # - os: linux
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - llvm-toolchain-trusty-4.0
+    #       packages:
+    #         - libxml2
+    #         - cmake
+    #         - clang++-4.0
+    #   env:
+    #     - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
+    # - os: linux
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - llvm-toolchain-trusty
+    #       packages:
+    #         - libxml2
+    #         - cmake
+    #         - clang++-5.0
+    #   env:
+    #     - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - libxml2
-      - g++-7
-      - cmake
+before_install:
+  - eval "${MATRIX_EVAL}"
 
 script:
-  - g++-7 --version
   - cmake .
   - make
   - ./test.sh
