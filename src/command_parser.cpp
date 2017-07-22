@@ -1,4 +1,4 @@
-#include "command_handler.h"
+#include "command_parser.h"
 
 #include <map>
 #include <iostream>
@@ -16,7 +16,7 @@ const std::map<ECommand, int> arg_count =
 
 }
 
-void command_handler::parse(int argc, char **argv)
+void command_parser::parse(int argc, char **argv)
 {
 	if (argc < 2) {
 		std::cerr << "Command not specified" << std::endl;
@@ -44,24 +44,24 @@ void command_handler::parse(int argc, char **argv)
 	}
 }
 
-std::experimental::optional<ECommand> command_handler::get_command() const
+std::experimental::optional<ECommand> command_parser::get_command() const
 {
 	return command;
 }
 
-const std::vector<std::string>& command_handler::get_arguments() const
+const std::vector<std::string>& command_parser::get_arguments() const
 {
 	return arguments;
 }
 
-void command_handler::print_usage(const std::string& name) const
+void command_parser::print_usage(const std::string& name) const
 {
 	std::cerr << "Usage:" << std::endl;
 	std::cerr << name << " check input_file" << std::endl;
 	std::cerr << name << " fix input_file output_file" << std::endl;
 }
 
-std::experimental::optional<ECommand> command_handler::parse_command(std::string str) const
+std::experimental::optional<ECommand> command_parser::parse_command(std::string str) const
 {
 	auto it = constant::command_map.find(str);
 	if (it != constant::command_map.end()) {

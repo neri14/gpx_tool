@@ -13,7 +13,7 @@
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
 
-#include <command_handler.h>
+#include <command_parser.h>
 
 const int EXPECTED_DIFF = 1;
 const char* TIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ";
@@ -227,11 +227,11 @@ enum EReturnCode {
 
 int main(int argc, char **argv)
 {
-	gpx::command_handler cmd_handler;
-	cmd_handler.parse(argc, argv);
+	gpx::command_parser cmd_parser;
+	cmd_parser.parse(argc, argv);
 
-	auto cmd = cmd_handler.get_command();
-	const std::vector<std::string>& args = cmd_handler.get_arguments();
+	auto cmd = cmd_parser.get_command();
+	const std::vector<std::string>& args = cmd_parser.get_arguments();
 
 	EReturnCode ret_code = EReturnCode_OK;
 

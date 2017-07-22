@@ -1,5 +1,5 @@
-#ifndef COMMAND_HANDLER_H
-#define COMMAND_HANDLER_H
+#ifndef COMMAND_PARSER_H
+#define COMMAND_PARSER_H
 
 #include <experimental/optional>
 #include <vector>
@@ -11,7 +11,7 @@ enum class ECommand {
 	Fix
 };
 
-class command_handler
+class command_parser
 {
 public:
 	void parse(int argc, char **argv);
@@ -28,4 +28,4 @@ private:
 
 } // namespace gpx
 
-#endif /* COMMAND_HANDLER_H */
+#endif /* COMMAND_PARSER_H */
