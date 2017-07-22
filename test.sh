@@ -55,6 +55,7 @@ function test_retval_is0 {
 
 # check if deubg enabled
 debug=0
+
 while getopts ":v" opt; do
 	case $opt in
 	v)
@@ -69,6 +70,7 @@ done
 # prepare variables
 score=0
 count=0
+sut="./gpx_tool"
 
 # prepare filesystem
 mkdir -p ./bin/test_out
@@ -80,16 +82,16 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # test input files are not correct
-test_retval_non0 ./bin/gpx_tool check ./input/test_input_1.gpx
-test_retval_non0 ./bin/gpx_tool check ./input/test_input_2.gpx
+test_retval_non0 ${sut} check ./input/test_input_1.gpx
+test_retval_non0 ${sut} check ./input/test_input_2.gpx
 
 # test expected output files are correct
-test_retval_is0 ./bin/gpx_tool check ./input/test_output_1.gpx
-test_retval_is0 ./bin/gpx_tool check ./input/test_output_2.gpx
+test_retval_is0 ${sut} check ./input/test_output_1.gpx
+test_retval_is0 ${sut} check ./input/test_output_2.gpx
 
 # test files correction successfull
-test_retval_is0 ./bin/gpx_tool fix ./input/test_input_1.gpx ./bin/test_out/out_1.gpx
-test_retval_is0 ./bin/gpx_tool fix ./input/test_input_2.gpx ./bin/test_out/out_2.gpx
+test_retval_is0 ${sut} fix ./input/test_input_1.gpx ./bin/test_out/out_1.gpx
+test_retval_is0 ${sut} fix ./input/test_input_2.gpx ./bin/test_out/out_2.gpx
 
 # test output files as expected
 test_retval_is0 cmp -s ./input/test_output_1.gpx ./bin/test_out/out_1.gpx

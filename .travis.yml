@@ -12,7 +12,10 @@ addons:
     packages:
       - libxml2
       - g++-7
+      - cmake
 
 script:
   - g++-7 --version
-  - make test
+  - cmake .
+  - make
+  - ./test.sh
