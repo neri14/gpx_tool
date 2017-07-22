@@ -13,6 +13,8 @@
 #include <libxml/tree.h>
 #include <libxml/xmlsave.h>
 
+#include <command_handler.h>
+
 const int EXPECTED_DIFF = 1;
 const char* TIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ";
 //const std::string OUTPUT_FILE = "out.gpx";
@@ -146,7 +148,7 @@ bool check_timestamps(xmlDocPtr doc, std::list<xmlNode*> points, int expected_di
 	return out_of_order == 0;
 }
 
-void correct_file(std::string input_file, std::string output_file)
+bool correct_file(std::string input_file, std::string output_file)
 {
 	std::cout << "=== CORRECTING FILE <" << input_file << "> ===" << std::endl;
 
@@ -179,6 +181,8 @@ void correct_file(std::string input_file, std::string output_file)
 
 	xmlFreeDoc(doc);
 	xmlCleanupParser();
+
+	return true;
 }
 
 bool check_file(std::string file)
@@ -213,34 +217,46 @@ bool check_file(std::string file)
 	return result;
 }
 
+enum EReturnCode {
+	EReturnCode_OK = 0,
+	EReturnCode_IncorrectCommand = 1,
+	EReturnCode_CheckFailed = 2,
+	EReturnCode_FixFailed = 3,
+	EReturnCode_UnsupportedCommand = 4
+};
+
 int main(int argc, char **argv)
 {
-	if (argc < 2) {
-		std::cerr << "missing command";
-		return 1;
-	}
-	std::string command(argv[1]);
+	gpx::command_handler cmd_handler;
+	cmd_handler.parse(argc, argv);
 
-	if (command == "check") {
-		if (argc < 3) {
-			std::cerr << "missing input filename" << std::endl;
-			return 1;
-		}
-		std::string input_file(argv[2]);
+	auto cmd = cmd_handler.get_command();
+	const std::vector<std::string>& args = cmd_handler.get_arguments();
 
-		if (!check_file(input_file)) {
-			return 1;
-		}
-	} else if (command == "fix") {
-		if (argc < 4){
-			std::cerr << "missing input and or output filename" << std::endl;
-			return 1;
-		}
-		std::string input_file(argv[2]);
-		std::string output_file(argv[3]);
+	EReturnCode ret_code = EReturnCode_OK;
 
-		correct_file(input_file, output_file);
+	if (!cmd) {
+		return EReturnCode_IncorrectCommand;
 	}
 
-	return 0;
+	switch (*cmd) {
+		case gpx::ECommand::Check:
+		ret_code = check_file(args[0]) ?
+		    EReturnCode_OK :
+		    EReturnCode_CheckFailed;
+
+		break;
+
+		case gpx::ECommand::Fix:
+		ret_code = correct_file(args[0], args[1]) ?
+		    EReturnCode_OK :
+		    EReturnCode_FixFailed;
+		break;
+
+		default:
+		ret_code = EReturnCode_UnsupportedCommand;
+		break;
+	}
+
+	return ret_code;
 }
