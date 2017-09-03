@@ -1,0 +1,98 @@
+@startuml
+
+class main
+hide main circle
+hide main methods
+hide main fields
+
+package gpx {
+	class gpx_handler {
+		+ gpx_handler(gpx_parser, worker)
+		+ void handle(std::string filename)
+	}
+	class gpx_parser {
+		+ gpx_file read_gpx(std::string filename)
+		+ void write_gpx(gpx_file gpx, std::string filename)
+	}
+	class gpx_file
+	class worker {
+		+ void run()
+	}
+}
+
+package libxml_wrapper {
+	class libxml_gpx_parser {
+		+ gpx_file read_gpx(std::string filename)
+		+ void write_gpx(gpx_file gpx, std::string filename)
+	}
+	class libxml_gpx_file
+}
+
+package executors {
+	class executor_worker {
+		+ executor_worker(std::list<EExecutor>)
+		+ void run()
+		- std::list<executor> executors
+	}
+	class executor_factory
+	class executor {
+		+ void execute(gpx_file gpx)
+	}
+	class gpx_checker {
+		+ void execute(gpx_file gpx)
+	}
+	class gpx_corrector {
+		+ void execute(gpx_file gpx)
+	}
+	enum EExecutor {
+		Corrector
+		Checker
+	}
+}
+
+class libxml2
+hide libxml2 circle
+hide libxml2 methods
+hide libxml2 fields
+
+
+' MAIN <-> all
+main ..> gpx_handler : creates
+main --> gpx_handler : uses
+main ..> libxml_gpx_parser : creates
+main ..> executor_worker : creates
+
+
+'GPX internal
+gpx_handler -down-> gpx_parser : uses
+gpx_handler -right-> worker : uses
+
+
+'GPX <-> LIBXML_WRAPPER
+gpx_parser <|-down- libxml_gpx_parser
+gpx_file <|-down- libxml_gpx_file
+
+
+'GPX <-> EXECUTORS
+worker <|-down- executor_worker
+
+
+'EXECUTORS internal
+executor_worker -down-> executor_factory : uses
+executor_worker -down-> executor : uses
+executor <|-down- gpx_checker
+executor <|-down- gpx_corrector
+executor_factory .down.> gpx_corrector : creates
+executor_factory .down.> gpx_checker : creates
+
+
+'LIBXML_WRAPPER internal
+libxml_gpx_parser .right.> libxml_gpx_file : creates
+
+
+'LIBXML_WRAPPER <-> LIBXML
+libxml_gpx_parser -down-> libxml2 : uses
+
+
+@enduml
+

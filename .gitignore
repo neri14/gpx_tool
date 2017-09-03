@@ -1,0 +1,12 @@
+### PlantUML ###
+
+*.png
+
+
+### CMake ###
+
+/CMakeCache.txt
+/CMakeFiles
+/Makefile
+/cmake_install.cmake
+/gpx_tool
