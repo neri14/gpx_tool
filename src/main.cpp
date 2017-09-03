@@ -4,6 +4,9 @@
 #include <tmp_correct_file.h>
 #include <tmp_consts.h>
 
+#include <libxml_wrapper/libxml_gpx_parser.h>
+#include <helpers/printer.h>
+
 enum EReturnCode {
 	EReturnCode_OK = 0,
 	EReturnCode_IncorrectCommand = 1,
@@ -12,8 +15,24 @@ enum EReturnCode {
 	EReturnCode_UnsupportedCommand = 4
 };
 
+void tmp_main()
+{
+	LOG_WARNING("running temporary main");
+
+	libxml_wrapper::libxml_gpx_parser libxml_parser;
+	gpx::gpx_parser& parser = libxml_parser;
+
+	auto file = parser.read_gpx("test");
+	parser.write_gpx("test", file);
+}
+
 int main(int argc, char **argv)
 {
+	if (argc = 1) {
+		tmp_main();
+		return 0;
+	}
+
 	gpx::command_parser cmd_parser;
 	cmd_parser.parse(argc, argv);
 

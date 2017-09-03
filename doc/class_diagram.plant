@@ -8,11 +8,11 @@ hide main fields
 package gpx {
 	class gpx_handler {
 		+ gpx_handler(gpx_parser, worker)
-		+ void handle(std::string filename)
+		+ void handle(std::string filepath)
 	}
 	class gpx_parser {
-		+ gpx_file read_gpx(std::string filename)
-		+ void write_gpx(gpx_file gpx, std::string filename)
+		+ gpx_file read_gpx(std::string filepath)
+		+ void write_gpx(gpx_file file, std::string filepath)
 	}
 	class gpx_file
 	class worker {
@@ -22,8 +22,8 @@ package gpx {
 
 package libxml_wrapper {
 	class libxml_gpx_parser {
-		+ gpx_file read_gpx(std::string filename)
-		+ void write_gpx(gpx_file gpx, std::string filename)
+		+ gpx_file read_gpx(std::string filepath)
+		+ void write_gpx(gpx_file file, std::string filepath)
 	}
 	class libxml_gpx_file
 }
@@ -36,13 +36,13 @@ package executors {
 	}
 	class executor_factory
 	class executor {
-		+ void execute(gpx_file gpx)
+		+ void execute(gpx_file file)
 	}
 	class gpx_checker {
-		+ void execute(gpx_file gpx)
+		+ void execute(gpx_file file)
 	}
 	class gpx_corrector {
-		+ void execute(gpx_file gpx)
+		+ void execute(gpx_file file)
 	}
 	enum EExecutor {
 		Corrector
