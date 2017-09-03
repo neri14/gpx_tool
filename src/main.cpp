@@ -28,7 +28,7 @@ void tmp_main()
 
 int main(int argc, char **argv)
 {
-	if (argc = 1) {
+	if (argc == 1) {
 		tmp_main();
 		return 0;
 	}
