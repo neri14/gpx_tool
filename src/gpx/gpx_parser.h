@@ -9,7 +9,9 @@ namespace gpx {
 class gpx_parser
 {
 public:
+	gpx_parser() = default;
 	virtual ~gpx_parser() = default;
+
 	virtual std::shared_ptr<gpx_file> read_gpx(std::string filepath) = 0;
 	virtual void write_gpx(std::string filepath, std::shared_ptr<gpx_file> file) = 0;
 };

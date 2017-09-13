@@ -5,6 +5,9 @@ namespace gpx {
 
 class gpx_file
 {
+public:
+	gpx_file() = default;
+	virtual ~gpx_file() = default;
 };
 
 }
